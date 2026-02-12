@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 
@@ -17,3 +18,5 @@ class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'slug'
+
+    permission_classes = [IsAuthenticated]
