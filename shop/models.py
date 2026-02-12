@@ -20,14 +20,14 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 class Product(models.Model):
-    categoty = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     image = models.ImageField(upload_to='products/%Y/%m/%d/', blank=True, null=True)
     stock = models.PositiveIntegerField()
-    available = models.BooleanField()
+    available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
