@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from .serializers import OrderCreateSerializer
 
-# Create your views here.
+class OrderCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrderCreateSerializer
