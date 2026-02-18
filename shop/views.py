@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
@@ -14,8 +14,14 @@ class CategoryListView(generics.ListAPIView):
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [
+        DjangoFilterBackend, 
+        filters.SearchFilter, 
+        filters.OrderingFilter
+    ]
     filterset_class = ProductFilter
+    search_fields = ['name', 'description']
+    ordering_fields = ['price', 'created']
 
 
 class ProductDetailView(generics.RetrieveAPIView):
