@@ -16,6 +16,15 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
     
+    def get_descendants(self):
+        descendants = []
+
+        for child in self.children.all():
+            descendants.append(child)
+            descendants.extend(child.get_descendants())
+            
+        return descendants
+    
     class Meta:
         verbose_name_plural = 'Categories'
 

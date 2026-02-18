@@ -3,9 +3,15 @@ from .models import Category, Product
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'image']
+        fields = ['id', 'name', 'slug', 'image', 'children']
+
+    def get_children(self, obj):
+        serializer = CategorySerializer(obj.children.all(), many=True)
+        return serializer.data
+
 
 
 class ProductSerializer(serializers.ModelSerializer):
