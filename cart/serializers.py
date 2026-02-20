@@ -11,6 +11,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ['id', 'product', 'product_id', 'quantity', 'cost']
 
+
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
     total_cost = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
@@ -18,3 +19,8 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields =['id', 'user', 'items', 'total_cost']
+
+
+class AddToCartSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1, required=False, default=1)

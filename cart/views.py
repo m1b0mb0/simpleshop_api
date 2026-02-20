@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from .models import Cart, CartItem
-from .serializers import CartSerializer, CartItemSerializer
+from .serializers import CartSerializer, CartItemSerializer, AddToCartSerializer
 from shop.models import Product
+from drf_spectacular.utils import extend_schema
 
 
 class CartView(views.APIView):
@@ -15,6 +16,11 @@ class CartView(views.APIView):
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
+    @extend_schema(
+        request=AddToCartSerializer,
+        responses={201: None},
+        summary='Add product to cart'
+    )
     def post(self, request):
         cart, created = Cart.objects.get_or_create(user=request.user)
         product_id = request.data.get('product_id')
