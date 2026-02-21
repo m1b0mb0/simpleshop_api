@@ -152,3 +152,7 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
