@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 from .models import Order, OrderItem
 
@@ -45,20 +46,21 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         cart = user.cart
 
-        total_sum = cart.total_cost
-        order = Order.objects.create(user=user, total_cost=total_sum, **validated_data)
-
         if not cart.items.exists():
-            raise serializers.ValidationError("Cart is empty")
-
-        for item in cart.items.all():
-            OrderItem.objects.create(
-                order=order,
-                product=item.product,
-                price=item.cost,
-                quantity=item.quantity
-            )
+                raise serializers.ValidationError("Cart is empty")
         
-        cart.items.all().delete()
+        with transaction.atomic():
+            total_sum = cart.total_cost
+            order = Order.objects.create(user=user, total_cost=total_sum, **validated_data)
+
+            for item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    price=item.cost,
+                    quantity=item.quantity
+                )
+            
+            cart.items.all().delete()
 
         return order
