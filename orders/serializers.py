@@ -1,6 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 from .models import Order, OrderItem
+from .tasks import send_order_confirmation_email
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -62,5 +63,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
                 )
             
             cart.items.all().delete()
+        
+        send_order_confirmation_email.delay(order.id, user.email)
 
         return order
