@@ -25,9 +25,10 @@ I started developing this API with the core database models for products and cat
 
 ## Running the Project
 1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Start infrastructure services (PostgreSQL & Redis): `docker-compose up -d`
-4. Apply database migrations: `python manage.py migrate`
-5. Start the Django development server: `python manage.py runserver`
-6. Start the Celery worker in a separate terminal: `celery -A config worker -l info --pool=solo`
-7. Open `http://127.0.0.1:8000/api/docs/swagger-ui/` in your browser
+2. Create a .env file in the project root directory (see .env.example)
+3. Install dependencies: `pip install -r requirements.txt`
+4. Start infrastructure services (PostgreSQL & Redis): `docker-compose up -d`
+5. Apply database migrations: `python manage.py migrate`
+6. Start the Django development server: `python manage.py runserver`
+7. Start the Celery worker in a separate terminal: `celery -A config worker -l info --pool=solo`
+8. Open `http://127.0.0.1:8000/api/docs/swagger-ui/` in your browser
